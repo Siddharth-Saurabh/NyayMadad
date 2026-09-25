@@ -7,6 +7,8 @@ import { config } from './config/env.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { getRedisClient } from './config/redis.js';
 
+import authRoutes from './routes/authRoutes.js';
+
 export const createApp = () => {
   const app = express();
 
@@ -87,6 +89,9 @@ export const createApp = () => {
     }
   });
 
+  // API Routes
+  app.use('/api/auth', authRoutes);
+
   // Placeholder root endpoint
   app.get('/', (req, res) => {
     res.json({
@@ -97,6 +102,9 @@ export const createApp = () => {
       health: '/health'
     });
   });
+
+  // Centralized Error Handling Middleware
+  app.use(errorHandler);
 
   return app;
 };
