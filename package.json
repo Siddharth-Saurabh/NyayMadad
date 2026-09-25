@@ -1,0 +1,22 @@
+{
+  "name": "nyaymadad-workspace",
+  "version": "1.0.0",
+  "description": "NyayMadad — AI-Powered Crime Reporting & Complaint Routing System",
+  "private": true,
+  "scripts": {
+    "server:install": "npm install --prefix server",
+    "client:install": "npm install --prefix client",
+    "install:all": "npm install && npm run server:install && npm run client:install",
+    "server:dev": "npm run dev --prefix server",
+    "client:dev": "npm run dev --prefix client",
+    "server:test": "npm run test --prefix server",
+    "client:test": "npm run test --prefix client",
+    "server:seed": "npm run seed --prefix server",
+    "test": "npm run server:test",
+    "lint": "npm run lint --prefix server && npm run lint --prefix client",
+    "build": "npm run build --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
