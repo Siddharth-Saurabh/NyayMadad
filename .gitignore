@@ -20,9 +20,11 @@ build/
 .env.production.local
 *.env
 
-# Uploads & Storage
-uploads/
-storage/
+# Uploads & Storage Data Directories
+/uploads/
+/storage/
+server/uploads/
+server/storage/
 temp/
 *.log
 
