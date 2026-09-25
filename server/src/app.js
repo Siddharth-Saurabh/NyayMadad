@@ -10,6 +10,11 @@ import { getRedisClient } from './config/redis.js';
 import authRoutes from './routes/authRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
 import complaintRoutes from './routes/complaintRoutes.js';
+import evidenceRoutes from './routes/evidenceRoutes.js';
+import authorityRoutes from './routes/authorityRoutes.js';
+import workflowRoutes from './routes/workflowRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 export const createApp = () => {
   const app = express();
@@ -95,6 +100,11 @@ export const createApp = () => {
   app.use('/api/auth', authRoutes);
   app.use('/api/ai', aiRoutes);
   app.use('/api/complaints', complaintRoutes);
+  app.use('/api', evidenceRoutes);
+  app.use('/api/authority', authorityRoutes);
+  app.use('/api', workflowRoutes);
+  app.use('/api/notifications', notificationRoutes);
+  app.use('/api/admin', adminRoutes);
 
   // Placeholder root endpoint
   app.get('/', (req, res) => {
