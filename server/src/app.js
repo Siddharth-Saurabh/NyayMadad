@@ -8,6 +8,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { getRedisClient } from './config/redis.js';
 
 import authRoutes from './routes/authRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
+import complaintRoutes from './routes/complaintRoutes.js';
 
 export const createApp = () => {
   const app = express();
@@ -91,6 +93,8 @@ export const createApp = () => {
 
   // API Routes
   app.use('/api/auth', authRoutes);
+  app.use('/api/ai', aiRoutes);
+  app.use('/api/complaints', complaintRoutes);
 
   // Placeholder root endpoint
   app.get('/', (req, res) => {
