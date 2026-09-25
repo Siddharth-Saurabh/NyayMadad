@@ -1,0 +1,80 @@
+stages:
+  - install
+  - lint
+  - test
+  - build
+  - containerize
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+# Cache dependencies across jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - server/node_modules/
+    - client/node_modules/
+
+install_dependencies:
+  stage: install
+  image: node:20-alpine
+  script:
+    - cd server && npm ci
+    - cd ../client && npm ci
+
+lint_code:
+  stage: lint
+  image: node:20-alpine
+  script:
+    - npm run lint
+
+unit_and_api_tests:
+  stage: test
+  image: node:20-alpine
+  script:
+    - cd server
+    - npm test
+  artifacts:
+    reports:
+      junit: server/junit.xml
+
+build_client:
+  stage: build
+  image: node:20-alpine
+  script:
+    - cd client
+    - npm run build
+  artifacts:
+    paths:
+      - client/dist/
+    expire_in: 1 week
+
+docker_build:
+  stage: containerize
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  only:
+    - main
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/server:$CI_COMMIT_SHA ./server
+    - docker build -t $CI_REGISTRY_IMAGE/client:$CI_COMMIT_SHA ./client
+
+deploy_staging:
+  stage: deploy
+  image: alpine:latest
+  only:
+    - main
+  script:
+    - echo "Deploying NyayMadad to Staging Kubernetes Cluster..."
+
+deploy_production:
+  stage: deploy
+  image: alpine:latest
+  only:
+    - main
+  when: manual
+  script:
+    - echo "Deploying NyayMadad to Production AWS Kubernetes Cluster..."
